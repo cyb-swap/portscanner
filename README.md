@@ -1,153 +1,110 @@
 # Advanced Python Port Scanner
 
-## Overview
+This project is a comprehensive port scanner built in Python, designed to offer functionality similar to the well-known Nmap tool. It supports multiple scanning techniques and includes features such as OS detection, host discovery, and threaded scanning for efficiency.
 
-The `port_scanner.py` script is a versatile and advanced port scanner built with Python. It replicates many of the functionalities of the popular `nmap` tool, offering capabilities such as:
-
-- **TCP Port Scanning** (default)
-- **SYN Scanning**
-- **UDP Port Scanning**
-- **OS Detection**
-- **Host Discovery** in a subnet
-- Multi-threaded scanning for speed
+---
 
 ## Features
 
-1. **Scan Types**
-   - TCP Scan (default)
-   - SYN Scan (stealthy)
-   - UDP Scan
-2. **OS Detection** using ICMP packets and TTL values.
-3. **Host Discovery** in a subnet using ICMP Echo requests.
-4. **Threaded Scanning** for faster results.
-5. **Flexible Input**:
-   - Single ports
-   - Comma-separated port lists
-   - Port ranges
-   - Port list files
+- **TCP Scan**: Determines if ports are open using standard TCP connections.
+- **SYN Scan**: Performs stealthy SYN scans to identify open ports.
+- **UDP Scan**: Identifies open UDP ports.
+- **Host Discovery**: Finds live hosts within a subnet.
+- **OS Detection**: Identifies the operating system of a target using TTL values.
+- **Threaded Scanning**: Utilizes multiple threads for faster port scanning.
 
-## Prerequisites
+---
 
-To use the script, ensure you have the following:
+## Requirements
 
-- **Python 3.7+** installed on your system.
-- **Administrative Privileges** (required for SYN and UDP scans).
-- **Scapy Library** for advanced networking features.
+### Install Dependencies
 
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/cyb-swap/portscanner.git
-cd portscanner
-```
-
-Install the required Python libraries:
+The project requires Python 3.6 or newer and the `scapy` library for packet crafting. Use the following commands to install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
+Dependencies include:
+
+- `scapy`
+
+---
+
 ## Usage
 
-### Basic Usage
+Run the script using the command line with various options to perform different types of scans. The following sections outline the available arguments.
 
-Run the script with the `-host` parameter to specify a target host. Add additional arguments as needed:
+### Arguments
 
-```bash
-python port_scanner.py -host <TARGET_HOST> [OPTIONS]
-```
-
-### Options
-
-| Argument  | Description                                                                                 |
-| --------- | ------------------------------------------------------------------------------------------- |
-| `-host`   | Target domain or IP address (required).                                                     |
-| `-p`      | Ports to scan: single port, comma-separated list, or range (e.g., `22`, `80,443`, `20-25`). |
-| `-iL`     | File containing a list of ports to scan.                                                    |
-| `-os`     | Perform OS detection on the target host.                                                    |
-| `-subnet` | Discover live hosts in a subnet (e.g., `192.168.1`).                                        |
-| `-scan`   | Type of scan: `tcp`, `syn`, or `udp` (default: `tcp`).                                      |
-| `-o`      | Save the scan results to a specified output file.                                           |
+| Argument  | Description                                                          |
+| --------- | -------------------------------------------------------------------- |
+| `-host`   | Target domain or IP address (Required).                              |
+| `-p`      | Ports to scan. Comma-separated (e.g., 22,80) or range (e.g., 1-100). |
+| `-iL`     | File containing a list of ports to scan.                             |
+| `-os`     | Perform OS detection on the target host.                             |
+| `-subnet` | Discover live hosts in a specified subnet (e.g., 192.168.1).         |
+| `-scan`   | Scan type: `tcp`, `syn`, or `udp`. Default is `tcp`.                 |
+| `-o`      | Output file to save scan results.                                    |
 
 ### Examples
 
-#### 1. TCP Port Scan
-
-Scan ports 80 and 443 on `example.com`:
+#### Perform a TCP Scan on Specific Ports
 
 ```bash
-python port_scanner.py -host example.com -p 80,443
+python port_scanner.py -host 192.168.1.1 -p 22,80,443 -scan tcp
 ```
 
-#### 2. SYN Scan
-
-Perform a SYN scan on ports 22 to 25:
+#### Perform a SYN Scan on a Range of Ports
 
 ```bash
-python port_scanner.py -host example.com -p 22-25 -scan syn
+python port_scanner.py -host 192.168.1.1 -p 1-100 -scan syn
 ```
 
-#### 3. UDP Scan
-
-Scan port 53 using UDP:
+#### Perform a UDP Scan Using a Port List File
 
 ```bash
-python port_scanner.py -host example.com -p 53 -scan udp
+python port_scanner.py -host 192.168.1.1 -iL ports.txt -scan udp
 ```
 
-#### 4. OS Detection
-
-Detect the operating system of a target:
+#### Perform OS Detection
 
 ```bash
-python port_scanner.py -host example.com -os
+python port_scanner.py -host 192.168.1.1 -os
 ```
 
-#### 5. Host Discovery
-
-Discover all live hosts in the `192.168.1` subnet:
+#### Perform Host Discovery in a Subnet
 
 ```bash
 python port_scanner.py -subnet 192.168.1
 ```
 
-#### 6. Using a Port List File
-
-Provide a file `ports.txt` containing ports to scan:
-
-```bash
-python port_scanner.py -host example.com -iL ports.txt
-```
-
-### Save Results
-
-Save the scan results to a file:
-
-```bash
-python port_scanner.py -host example.com -p 80,443 -o results.txt
-```
+---
 
 ## Output
 
-The script displays results in a clear format, such as:
+The script outputs scan results directly to the terminal. Optionally, you can save the results to a file using the `-o` argument:
 
-```plaintext
-    ==================================
-    |         Advanced Port Scanner  |
-    |          Built with Python     |
-    ==================================
-[+] Port 80 is OPEN
-[-] Port 443 is CLOSED
-[+] Host 192.168.1.1 is alive
+```bash
+python port_scanner.py -host 192.168.1.1 -p 22,80 -o results.txt
 ```
 
-## Contributing
+---
 
-Feel free to contribute to the project by submitting pull requests or reporting issues.
+## Notes
+
+- Ensure you have administrative or root privileges for certain scanning techniques like SYN scans.
+- Use this tool responsibly and only on networks you have permission to test.
+
+---
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is provided for educational purposes only and is licensed under the MIT License.
+
+---
+
+## Contribution
+
+Contributions and improvements are welcome! Feel free to submit pull requests or issues on the [GitHub repository](https://github.com/cyb-swap/portscanner).
 
